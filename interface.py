@@ -20,6 +20,7 @@ from servicos import (
     verificar_movimentacao_manual,
     obter_processos_por_usuario
 )
+from utils import parse_iso_date  # Função auxiliar para converter datas
 
 # Configuração inicial da página
 st.set_page_config(page_title=APP_NAME, layout=PAGE_LAYOUT)
@@ -97,7 +98,7 @@ def main():
         if filtro_status != "Todos":
             processos_visiveis = [
                 p for p in processos_visiveis if calcular_status_processo(
-                    datetime.date.fromisoformat(p.get("prazo", datetime.date.today().isoformat())),
+                    parse_iso_date(p.get("prazo", "")),
                     p.get("houve_movimentacao", False)
                 ) == filtro_status
             ]
@@ -109,12 +110,12 @@ def main():
             st.metric("Total Processos", len(processos_visiveis))
         with col2:
             st.metric("Atrasados", len([p for p in processos_visiveis if calcular_status_processo(
-                datetime.date.fromisoformat(p.get("prazo", datetime.date.today().isoformat())),
+                parse_iso_date(p.get("prazo", "")),
                 p.get("houve_movimentacao", False)
             ) == "🔴 Atrasado"]))
         with col3:
             st.metric("Para Atenção", len([p for p in processos_visiveis if calcular_status_processo(
-                datetime.date.fromisoformat(p.get("prazo", datetime.date.today().isoformat())),
+                parse_iso_date(p.get("prazo", "")),
                 p.get("houve_movimentacao", False)
             ) == "🟡 Atenção"]))
         with col4:
@@ -125,7 +126,7 @@ def main():
         if processos_visiveis:
             df = pd.DataFrame(processos_visiveis)
             df["Status"] = df.apply(lambda row: calcular_status_processo(
-                datetime.date.fromisoformat(row.get("prazo", datetime.date.today().isoformat())),
+                parse_iso_date(row.get("prazo", "")),
                 row.get("houve_movimentacao", False)
             ), axis=1)
             status_order = {"🔴 Atrasado": 0, "🟡 Atenção": 1, "🟢 Normal": 2, "🔵 Movimentado": 3}
@@ -439,7 +440,7 @@ def main():
                         dados_filtrados = aplicar_filtros(PROCESSOS, filtros)
                         if status_filtro != "Todos":
                             dados_filtrados = [p for p in dados_filtrados if calcular_status_processo(
-                                datetime.date.fromisoformat(p.get("prazo", datetime.date.today().isoformat())),
+                                parse_iso_date(p.get("prazo", "")),
                                 p.get("houve_movimentacao", False)
                             ) == status_filtro]
                         st.session_state.dados_relatorio = dados_filtrados
@@ -486,4 +487,3 @@ def main():
                     
 if __name__ == '__main__':
     main()
-
