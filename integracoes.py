@@ -8,16 +8,6 @@ import streamlit as st
 from config import GAS_WEB_APP_URL, DEEPSEEK_API_KEY, DEEPSEEK_ENDPOINT
 
 def enviar_dados_para_planilha(tipo: str, dados: dict) -> bool:
-    """
-    Envia dados para o Google Sheets por meio do Google Apps Script.
-
-    Args:
-        tipo (str): Tipo dos dados (ex.: "Cliente", "Processo", etc.).
-        dados (dict): Dicionário com os dados a serem enviados.
-
-    Returns:
-        bool: True se o envio foi bem-sucedido; False caso contrário.
-    """
     try:
         payload = {"tipo": tipo, **dados}
         response = requests.post(
@@ -25,10 +15,20 @@ def enviar_dados_para_planilha(tipo: str, dados: dict) -> bool:
             data=json.dumps(payload),
             headers={'Content-Type': 'application/json'}
         )
-        return response.text.strip() == "OK"
+        # Debug: exibe status code e a resposta
+        st.write(f"Status Code: {response.status_code}")
+        st.write(f"Response Text: {response.text}")
+        
+        if response.text.strip() == "OK":
+            st.success("Dados enviados com sucesso!")
+            return True
+        else:
+            st.error("Falha ao enviar os dados: resposta inesperada")
+            return False
     except Exception as e:
         st.error(f"❌ Erro ao enviar dados ({tipo}): {e}")
         return False
+
 
 
 def carregar_dados_da_planilha(tipo: str, debug: bool = False) -> list:
