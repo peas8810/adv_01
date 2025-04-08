@@ -1,9 +1,5 @@
-"""
-utils.py - Funções utilitárias e decoradores para a aplicação.
-"""
-
-import time
 import datetime
+import time
 import functools
 import logging
 
@@ -15,18 +11,27 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def parse_iso_date(date_str: str) -> datetime.date:
+    """
+    Converte uma string no formato ISO ("YYYY-MM-DD") para um objeto datetime.date.
+    Se a conversão falhar (por exemplo, se date_str estiver vazio ou em formato inválido),
+    retorna a data de hoje.
+    
+    Args:
+        date_str (str): Data no formato ISO (ex: "2023-10-08").
+    
+    Returns:
+        datetime.date: Objeto de data, ou data de hoje se ocorrer erro.
+    """
+    try:
+        return datetime.date.fromisoformat(date_str)
+    except (TypeError, ValueError):
+        logger.warning(f"Não foi possível converter '{date_str}' para data, retornando data atual.")
+        return datetime.date.today()
 
 def retry(max_attempts: int = 3, delay: float = 1.0, exceptions: tuple = (Exception,)):
     """
-    Decorador para repetir a execução de uma função caso ocorra alguma exceção específica.
-
-    Args:
-        max_attempts (int): Número máximo de tentativas.
-        delay (float): Tempo de espera (em segundos) entre as tentativas.
-        exceptions (tuple): Exceções que disparam a nova tentativa.
-
-    Returns:
-        Função decorada que implementa a lógica de repetição.
+    Decorador para repetir a execução de uma função caso ocorra uma exceção específica.
     """
     def decorator(func):
         @functools.wraps(func)
@@ -45,13 +50,9 @@ def retry(max_attempts: int = 3, delay: float = 1.0, exceptions: tuple = (Except
         return wrapper
     return decorator
 
-
 def timeit(func):
     """
-    Decorador para medir o tempo de execução de uma função e logar o resultado.
-
-    Returns:
-        Resultado da função decorada, após a medição do tempo.
+    Decorador para medir e logar o tempo de execução de uma função.
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -62,33 +63,16 @@ def timeit(func):
         return result
     return wrapper
 
-
 def format_date(date_obj):
     """
     Formata um objeto datetime ou date em string no formato 'YYYY-MM-DD'.
-
-    Args:
-        date_obj (datetime.date ou datetime.datetime): Objeto de data a ser formatado.
-
-    Returns:
-        str: Data formatada.
     """
     if isinstance(date_obj, (datetime.date, datetime.datetime)):
         return date_obj.strftime("%Y-%m-%d")
     raise ValueError("O argumento não é um objeto de data válido.")
 
-
 def safe_get(dictionary: dict, key, default=None):
     """
     Retorna o valor associado a uma chave em um dicionário de forma segura.
-
-    Args:
-        dictionary (dict): Dicionário de onde extrair o valor.
-        key (qualquer tipo): Chave a ser buscada.
-        default (Any, opcional): Valor padrão caso a chave não exista.
-
-    Returns:
-        Qualquer: Valor associado à chave ou o valor padrão.
     """
     return dictionary.get(key, default)
-
