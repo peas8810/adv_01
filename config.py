@@ -24,3 +24,4 @@ DEEPSEEK_ENDPOINT = os.getenv("DEEPSEEK_ENDPOINT", "https://api.deepseek.com/v1/
 # URL do Web App do Google que integra com o Google Sheets.
 GAS_WEB_APP_URL = os.getenv("GAS_WEB_APP_URL", "https://script.google.com/macros/s/AKfycbzXp6IKpQfVhDXuBnTsVaMLJOszsPhPvkm5BWeaGsO54o_jnmXh3xxcS2Ica8FNCbXw/exec")
 
+
