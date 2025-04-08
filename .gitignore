@@ -1,0 +1,11 @@
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+env/
+.venv/
+venv/
+
+# Arquivos de ambiente sensíveis
+.env
