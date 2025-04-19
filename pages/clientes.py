@@ -3,6 +3,8 @@ import datetime
 from utils.helpers import get_dataframe_with_cols, exportar_pdf
 from servicos.planilhas import carregar_dados_da_planilha, enviar_dados_para_planilha
 
+def main():
+
 
 def main():
     st.subheader("👥 Cadastro de Clientes")
