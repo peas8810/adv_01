@@ -1,11 +1,10 @@
+# servicos/esaj.py
 import requests
 from bs4 import BeautifulSoup
 
-
 def consultar_movimentacoes_simples(numero_processo):
     """
-    Busca as últimas movimentações de um processo no site do ESAJ (TJSP).
-    Retorna lista de strings ou mensagem de erro.
+    Busca as últimas movimentações de um processo no ESAJ TJSP.
     """
     url = f"https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo={numero_processo}"
     try:
@@ -16,5 +15,5 @@ def consultar_movimentacoes_simples(numero_processo):
         if andamentos:
             return [a.get_text(strip=True) for a in andamentos[:5]]
         return ["Nenhuma movimentação encontrada"]
-    except Exception:
+    except:
         return ["Erro ao consultar movimentações"]
