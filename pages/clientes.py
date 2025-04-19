@@ -5,6 +5,8 @@ from servicos.planilhas import carregar_dados_da_planilha, enviar_dados_para_pla
 
 def main():
 
+def main():
+
 
 def main():
     st.subheader("👥 Cadastro de Clientes")
