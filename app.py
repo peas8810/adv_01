@@ -1,9 +1,6 @@
-- import streamlit as st
-- import importlib
-- from utils import carregar_usuarios_da_planilha, login
-+ import streamlit as st
-+ import importlib
-+ from servicos.usuarios import carregar_usuarios_da_planilha, login
+import streamlit as st
+import importlib
+from servicos.usuarios import carregar_usuarios_da_planilha, login
 
 # Configuração da página
 st.set_page_config(page_title="Sistema Jurídico", layout="wide")
@@ -61,4 +58,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
