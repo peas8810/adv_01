@@ -2,7 +2,8 @@ import streamlit as st
 import plotly.express as px
 import datetime
 from utils.helpers import converter_data, calcular_status_processo, get_dataframe_with_cols
-from servicos.planilhas import carregar_dados_da_planilha, enviar_dados_para_planilha
+from servicos.planilhas import carregar_dados_da_planilha
+
 
 
 def main():
